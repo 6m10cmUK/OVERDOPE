@@ -4,6 +4,7 @@
         <script src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
     </head>
     <body>
+        <h1>DOPE-SYSTEM</h1>
         <div id="table"></div>
         <div id="generate">
             <input type="number" id="seed" class="seed1" placeholder="SEED値1" value="12345"/>
@@ -104,11 +105,11 @@
                 $("#table").html(html);
 
                 $(`.${y}`).css({"background-color":`rgb(${color[1.3]},0,0)`});
-                $(`.${y+1}`).css({"background-color":`rgb(${color[1.3]},0,0)`});
-                $(`.${y-1}`).css({"background-color":`rgb(${color[1.3]},0,0)`});
+                $(`.${y+1}`).css({"background-color":`rgb(${color[0.9]},0,0)`});
+                $(`.${y-1}`).css({"background-color":`rgb(${color[0.9]},0,0)`});
                 $(`.${x}0`).css({"background-color":`rgb(${color[1.3]},0,0)`});
-                $(`.${x+1}0`).css({"background-color":`rgb(${color[1.3]},0,0)`});
-                $(`.${x-1}0`).css({"background-color":`rgb(${color[1.3]},0,0)`});
+                $(`.${x+1}0`).css({"background-color":`rgb(${color[0.9]},0,0)`});
+                $(`.${x-1}0`).css({"background-color":`rgb(${color[0.9]},0,0)`});
 
             }
 
@@ -123,6 +124,9 @@
             body{
                 background-color: black;
                 color: white;
+            }
+            h1{
+                text-align: center;
             }
             #table{
                 border: 1px solid white;
