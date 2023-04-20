@@ -1,0 +1,175 @@
+<html>
+    <head>
+        <title>OVERDOPE</title>
+        <script src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
+    </head>
+    <body>
+        <div id="table"></div>
+        <div id="generate">
+            <input type="number" id="seed" class="seed1" placeholder="SEED値1" value="12345"/>
+            <input type="number" id="seed" class="seed2" placeholder="SEED値2" value="67890"/>
+            <div id="generate_bt">生成</div>
+        </div>
+        <script>
+
+            class Random {
+                constructor(seed = 19681106) {
+                    this.x = 31415926535;
+                    this.y = 8979323846;
+                    this.z = 2643383279;
+                    this.w = seed;
+                }
+                
+                // XorShift
+                next() {
+                    let t;
+                
+                    t = this.x ^ (this.x << 11);
+                    this.x = this.y; this.y = this.z; this.z = this.w;
+                    return this.w = (this.w ^ (this.w >>> 19)) ^ (t ^ (t >>> 8)); 
+                }
+                
+                // min以上max以下の乱数を生成する
+                nextInt(min, max) {
+                    const r = Math.abs(this.next());
+                    return min + (r % (max + 1 - min));
+                }
+            }
+
+            var map = [[],[],[],[],[],[],[],[],[],[]]
+
+            var color = {
+                "0.1":0,
+                "0.2":23,
+                "0.3":46,
+                "0.4":69,
+                "0.5":92,
+                "0.6":115,
+                "0.7":139,
+                "0.8":162,
+                "0.9":185,
+                "1.0":208,
+                "1.1":231,
+                "1.2":255
+            }
+
+            function rand(seed){
+                // return Math.floor(Math.random() * 9);
+                var random = new Random(seed);
+                return random.nextInt( 0, 9 );
+            }
+
+            function generate(seed1, seed2){
+                let y = rand(seed1);
+                let x = rand(seed2);            
+                map[y][x] = 1.2;
+
+                for(var i=0; i<10; i++){
+                    for(var j=0; j<10; j++){
+                        var yy = i-y;
+                        var xx = j-x;
+                        if(yy<0){yy*=-1};
+                        if(xx<0){xx*=-1};
+                        var val = 12-xx-yy;
+                        if(val>=12){val=12}
+                        if(val<=1){val=1}
+                        map[i][j] =`${Math.floor(val*0.1)}.${val%10}`;
+                    }
+                }
+                var html = `<table>
+                    <tr>
+                    <th class="example"><div class="text1">CS番号末尾１桁目</div><div class="text2">CS番号末尾２桁目</div></th>
+                    <th>0</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                    <th>5</th>
+                    <th>6</th>
+                    <th>7</th>
+                    <th>8</th>
+                    <th>9</th>
+                </tr>`;
+                for(var i=0; i<10; i++){
+                    html += `<tr><th>${i}</th>`
+                    for(var j=0; j<10; j++){
+                        html += `<td style="background-color: rgb(${color[map[i][j]]}, 0, 0);">${map[i][j]}</td>`
+                    }
+                    html += `</tr>`
+                }
+                html += "</table>"
+                
+                $("#table").html(html);
+
+            }
+
+            generate($(".seed1").val(),$(".seed2").val());
+
+            $("#generate_bt").click(()=>{
+                // location.reload();
+                generate($(".seed1").val(),$(".seed2").val());
+            });
+        </script>
+        <style>
+            body{
+                background-color: black;
+                color: white;
+            }
+            table{
+                border: 1px white solid;
+                border-collapse: separate;
+                border-spacing: 0;
+                margin: 60px auto;
+            }
+            th, td{
+                border: 0.5px solid white;
+            }
+            th{
+                width: 40px;
+                height: 40px;
+            }
+            td{
+                text-align: center;
+                
+            }
+            .example{
+                background-image: linear-gradient(to right top, transparent calc(50% - 0.5px), #999 50%, #999 calc(50% + 0.5px), transparent calc(50% + 1px));
+            }
+            #generate{
+                width: 200px;
+                margin: 0 auto;
+            }
+            #seed{
+                background-color: rgb(101, 101, 101);
+                color: white;
+                width: 200px;
+                margin: 10px 0;
+            }
+            #seed::placeholder {
+                color: rgb(169, 169, 169);
+                font-style: italic;
+            }
+            #generate_bt{
+                width: 100px;
+                padding: 5px;
+                text-align: center;
+                margin: 0 auto;
+                background-color: rgb(151, 0, 0);
+            }
+            .text1, .text2{
+                position: relative;
+                width: 0;
+                word-break: keep-all;
+                font-weight: bold;
+            }
+            .text1{
+                top: -30px;
+                left: 35px;
+            }
+            .text2{
+                left: -18px;
+                 transform: rotate(90deg);
+            }
+        </style>
+    </body>
+</html>
